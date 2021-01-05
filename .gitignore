@@ -5,3 +5,5 @@ ads.json
 kijiji_scraper.egg-info/*
 dist/*
 build/*
+venv/
+.idea
