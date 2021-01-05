@@ -7,6 +7,7 @@ from shutil import which
 from kijiji_scraper.kijiji_scraper import KijijiScraper
 from kijiji_scraper.email_client import EmailClient
 from . import VERSION
+from .mattermost_client import MattermostClient
 
 
 def parse_args():
@@ -46,6 +47,11 @@ def parse_args():
         help="Do not send emails."
              " This is useful for the first time you scrape a Kijiji as the current ads will be indexed"
              " and after removing the flag you will only be sent new ads.",
+        action='store_true')
+    parser.add_argument(
+        '--skip_mattermost',
+        '-s',
+        help="Do not send ads to a mattermost instance.",
         action='store_true')
     parser.add_argument(
         '--all',
@@ -102,6 +108,7 @@ def main():
         email_config, mattermost_config, urls_to_scrape = ({}, {}, {})
         # Do not try to send mail if no config file is loaded
         args.skipmail = True
+        args.skip_mattermost = True
 
     # Initialize the KijijiScraper and email client
     ads_filepath = None
@@ -160,6 +167,10 @@ def main():
             print("Email sent to %s" % email_client.receiver)
         else:
             print("No email sent")
+        if not args.skip_mattermost and len(ads):
+            mm_client = MattermostClient(mattermost_config)
+            mm_client.post_ads(ads)
+            print("Ads sent to Mattermost in channel {}".format(mattermost_config.mm_channel))
 
     if ads_filepath:
         kijiji_scraper.save_ads()
