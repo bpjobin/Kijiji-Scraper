@@ -16,9 +16,8 @@ smtp port: 465
 
 mm_host: 192.168.68.107
 mm_port: 5180
-mm_username: mm_user
-mm_password: mm_password
-mm_channel: kijiji
+mm_access_token: iiq31oaj7jbn8m4zoonznopy9w
+mm_channel: Kijiji
 
 ---
 # Set the URLs you wish to scrape below with an optional list of words to exclude per URL.

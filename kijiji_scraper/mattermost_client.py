@@ -3,17 +3,31 @@ import yaml
 
 
 class MattermostClient():
-    def __init__(self):
-        mm = mattermost.MMApi("https://mattermost.example.com/api")
-        mm.login("user@example.com", "my-pw")
-        # alternatively use a personal-access-token/bot-token.
-        # mm.login(bearer="my-personal-access-token")
+    def __init__(self, mattermost_config):
+        self._host = mattermost_config.get("mm_host")
+        self._port = mattermost_config.get("mm_port")
+
+        self._mattermost = mattermost.MMApi("http://{}:{}/api".format(self._host, self._port))
+        self._mattermost.login(bearer=mattermost_config.get("mm_access_token"))
+        print([i for i in self._mattermost.get_teams()])
+        # team = self._mattermost.get_team("NAS")
+        # self._channel = self._mattermost.get_channel_by_name(
+        #     team_id=team.get("id"),
+        #     channel_name=mattermost_config.get("mm_channel")
+        # )
+
+    def post_ads(self, ads):
+        """"""
+        pass
+        # self._mattermost.create_post(self._channel.get("id"))
 
 
 if __name__ == '__main__':
-    filename = "../config.yaml"
-    with open(filename, "r") as config_file:
-        email_config, mm_config, urls_to_scrape = yaml.safe_load_all(config_file)
-    print(email_config)
-    print(mm_config)
-    print(urls_to_scrape)
+    mm = MattermostClient(
+        {
+            "mm_host": "192.168.68.107",
+            "mm_port": "5180",
+            "mm_access_token": "iiq31oaj7jbn8m4zoonznopy9w",
+            "mm_channel": "Kijiji"
+        }
+    )
