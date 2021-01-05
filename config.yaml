@@ -12,6 +12,13 @@ password: Sender Password
 receiver: receiver@example.com
 smtp server: smtp.gmail.com
 smtp port: 465
+---
+
+mm_host: 192.168.68.107
+mm_port: 5180
+mm_username: mm_user
+mm_password: mm_password
+mm_channel: kijiji
 
 ---
 # Set the URLs you wish to scrape below with an optional list of words to exclude per URL.
