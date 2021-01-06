@@ -14,10 +14,11 @@ smtp server: smtp.gmail.com
 smtp port: 465
 ---
 
-mm_host: 192.168.68.107
-mm_port: 5180
-mm_access_token: iiq31oaj7jbn8m4zoonznopy9w
+mm_host: 192.168.68.10
+mm_port: 8065
+mm_access_token: abcdefghijklmnop1234567890
 mm_channel: Kijiji
+mm_team: Mattermost
 
 ---
 # Set the URLs you wish to scrape below with an optional list of words to exclude per URL.

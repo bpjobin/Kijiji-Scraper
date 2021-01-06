@@ -50,7 +50,7 @@ def parse_args():
         action='store_true')
     parser.add_argument(
         '--skip_mattermost',
-        '-s',
+        '-mm',
         help="Do not send ads to a mattermost instance.",
         action='store_true')
     parser.add_argument(
@@ -83,7 +83,7 @@ def main():
     if args.init:
         init()
         exit(0)
-    
+
     # Handle custom config file
     if args.conf:
         filepath = args.conf
@@ -139,6 +139,10 @@ def main():
         print("You must supply at least one URL to scrape. Use --url or configure URLs in the config file.")
         exit(-1)
 
+    mm_client = None
+    if not args.skip_mattermost:
+        mm_client = MattermostClient(mattermost_config)
+
     # Scrape each url given in config file
     for url_dict in urls_to_scrape:
         url = url_dict.get("url")
@@ -167,10 +171,9 @@ def main():
             print("Email sent to %s" % email_client.receiver)
         else:
             print("No email sent")
-        if not args.skip_mattermost and len(ads):
-            mm_client = MattermostClient(mattermost_config)
+        if mm_client and not args.skip_mattermost and len(ads):
             mm_client.post_ads(ads)
-            print("Ads sent to Mattermost in channel {}".format(mattermost_config.mm_channel))
+            print("Ads sent to Mattermost in channel {}".format(mattermost_config.get("mm_channel")))
 
     if ads_filepath:
         kijiji_scraper.save_ads()
