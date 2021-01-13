@@ -25,8 +25,14 @@ class MattermostClient:
 
     def post_ads(self, ads):
         """"""
-        for ad_id, ad_info in ads.items():
+        for ad_info in ads.values():
+            message = "{price}\n{title}\n{details} \n{url}".format(
+                title=ad_info.get("Title"),
+                price=ad_info.get("Price"),
+                details=ad_info.get("Details"),
+                url=ad_info.get("Url")
+            )
             self._mattermost.create_post(
                 self._channel.get("id"),
-                ad_info.get("Url")
+                message=message
             )
